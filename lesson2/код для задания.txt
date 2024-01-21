@@ -1,0 +1,33 @@
+---------------------------------------------------------------
+                        ЗАДАНИЕ 1
+---------------------------------------------------------------
+fs.rename("hello.txt", "async operation.txt", function(error){
+    if(error) {console.log(error)} // если возникла ошибка
+});
+
+ 
+fs.renameSync("hello.txt", "sync operation.txt")
+
+---------------------------------------------------------------
+                        ЗАДАНИЕ 2
+---------------------------------------------------------------
+
+let fileContent;
+   
+   fs.readFile('./file.txt', (err, data) => {
+     if(err) throw(err);
+     fileContent = data;
+   });
+   
+console.log(fileContent);
+
+---------------------------------------------------------------
+                        ЗАДАНИЕ 2 - ПРОДОЛЖЕНИЕ
+---------------------------------------------------------------
+
+fs.readFile('./file.txt','utf-8', (err, data) => {
+    if(err) throw(err);
+    fileContent = data;
+  
+console.log(fileContent);
+});

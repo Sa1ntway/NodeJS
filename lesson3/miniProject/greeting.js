@@ -1,11 +1,11 @@
 function Morning(userName) {
-  return "Доброе утро, " + userName;
+  return "Доброе утро, " + userName + "; ";
 }
 function Afternoon(userName) {
-  return "Добрый день, " + userName;
+  return "Добрый день, " + userName + "; ";
 }
 function Evening(userName) {
-  return "Добрый вечер, " + userName;
+  return "Добрый вечер, " + userName + "; ";
 }
 
 function greet(userName) {

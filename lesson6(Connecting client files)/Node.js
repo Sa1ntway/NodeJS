@@ -25,7 +25,12 @@ function addClientFile(url, header, response, err) {
     response.write(data);
     response.end();
     if (err) {
-      fs.readFile("404.html", (err, data) => {});
+      fs.readFile("404.html", (err, data) => {
+        response.setHeader("Content-type", "text/html");
+        response.statusCode = 404;
+        response.write(data);
+        response.end();
+      });
     }
   });
 }

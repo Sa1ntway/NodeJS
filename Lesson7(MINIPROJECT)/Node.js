@@ -16,56 +16,39 @@ http
             response.end();
           });
         } else {
+          let data404 = fs.readFileSync("404.html");
           response.statusCode = 404;
-          response.write("Page not found");
+          response.write(data404);
         }
       });
     } else if (request.url.endsWith(".css")) {
-      let cssFile = request.url.slice(1);
-      fs.readFile(cssFile, (err, data) => {
-        if (!err) {
-          response.setHeader("Content-type", "text/css");
-          response.statusCode = 200;
-          response.write(data);
-        } else {
-          response.statusCode = 404;
-          response.write("Page not found");
-        }
-        response.end();
-      });
+      addClientFile(response, request.url, "text/css");
     } else if (request.url.endsWith(".js")) {
-      let jsFile = request.url.slice(1);
-      fs.readFile(jsFile, (err, data) => {
-        if (!err) {
-          response.setHeader("Content-type", "text/javascript");
-          response.statusCode = 200;
-          response.write(data);
-          response.end();
-        } else {
-          response.statusCode = 404;
-          response.write("Page not found");
-        }
-      });
+      addClientFile(response, request.url, "text/javascript");
     } else if (request.url.endsWith(".jpg")) {
-      let imgFile = request.url.slice(1);
-      fs.readFile(imgFile, (err, data) => {
-        if (!err) {
-          response.setHeader("Content-type", "img/jpg");
-          response.statusCode = 200;
-          response.write(data);
-          response.end();
-        }
-      });
+      addClientFile(response, request.url, "img/jpg");
     } else if (request.url.endsWith(".png")) {
-      let pngFile = request.url.slice(1);
-      fs.readFile(pngFile, (err, data) => {
-        if (!err) {
-          response.setHeader("Content-type", "img/png");
-          response.statusCode = 200;
-          response.write(data);
-          response.end();
-        }
-      });
+      addClientFile(response, request.url, "img/png");
+    } else if (request.url.endsWith(".jpeg")) {
+      addClientFile(response, request.url, "img/jpeg");
     }
   })
   .listen(8888);
+
+function addClientFile(response, url, header) {
+  let urlFile = url.slice(1);
+
+  fs.readFile(urlFile, (err, data) => {
+    if (!err) {
+      response.setHeader("Content-type", header);
+      response.statusCode = 200;
+      response.write(data);
+      response.end();
+    } else {
+      let data404 = fs.readFileSync("404.html");
+      response.statusCode = 404;
+      response.write(data404);
+      response.end();
+    }
+  });
+}

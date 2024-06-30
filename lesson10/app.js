@@ -8,6 +8,7 @@ const favicon = require("serve-favicon");
 const config = require("./config");
 const indexRouter = require("./routes/index");
 const expressLayouts = require("express-ejs-layouts");
+const regRouter = require("./routes/reg");
 
 const logStream = fs.createWriteStream(path.join(__dirname, "logs.log"), {
   flags: "a",
@@ -37,7 +38,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -45,6 +46,8 @@ app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
+
+app.use("/reg", regRouter);
 
 // // catch 404 and forward to error handler
 app.use(function (req, res, next) {

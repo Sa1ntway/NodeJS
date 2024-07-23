@@ -1,34 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const mongoose = require("mongoose");
+const User = require("../models/user");
 
-const userSchema = new mongoose.Schema({
-  login: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-    maxlength: 20,
-  },
-});
-userSchema.methods.done = function () {
-  const greeting = `User ${this.login} has been successfully registered`;
-  console.log(greeting);
-};
-
-const User = mongoose.model("User", userSchema);
-
-router.get("/", function (req, res, next) {
+exports.registerPage = function (req, res) {
   res.render("register", {
     title: "Регистрация",
     layout: "./layouts/main-layout",
   });
-});
+};
 
-router.post("/", async function (req, res, next) {
+exports.addUser = async function (req, res) {
   const user = new User({
     login: req.body.login,
     password: req.body.password,
@@ -71,6 +50,4 @@ router.post("/", async function (req, res, next) {
       });
     }
   }
-});
-
-module.exports = router;
+};

@@ -6,9 +6,11 @@ const fs = require("fs");
 var logger = require("morgan");
 const favicon = require("serve-favicon");
 const config = require("./config");
-const indexRouter = require("./routes/index");
+// const indexRouter = require("./routes/index");
+const homeRouter = require("./routes/home-router");
+
 const expressLayouts = require("express-ejs-layouts");
-const regRouter = require("./routes/reg");
+const userRouter = require("./routes/user-router");
 
 const logStream = fs.createWriteStream(path.join(__dirname, "logs.log"), {
   flags: "a",
@@ -27,7 +29,7 @@ app.get("/test", function (req, res) {
   res.end("test");
 });
 
-app.use("/", indexRouter);
+app.use("/", homeRouter);
 
 app.use("/forbidden", function (req, res, next) {
   next(createError(403, "Ой! Вам сюда нельзя!"));
@@ -47,7 +49,7 @@ app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 
-app.use("/reg", regRouter);
+app.use("/users", userRouter);
 
 // // catch 404 and forward to error handler
 app.use(function (req, res, next) {

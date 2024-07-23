@@ -16,7 +16,6 @@ const mongoose = require("mongoose");
 
 const port = normalizePort(config.get("port"));
 app.set("port", port);
-
 /**
  * Create HTTP server.
  */
@@ -27,7 +26,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/webchatdb");
+  await mongoose.connect(config.get("dbUrl"));
   console.log("Connected successfully to server");
 
   server.listen(port);

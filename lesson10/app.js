@@ -8,6 +8,7 @@ const favicon = require("serve-favicon");
 const config = require("./config");
 // const indexRouter = require("./routes/index");
 const homeRouter = require("./routes/home-router");
+const cookieParser = require("cookie-parser");
 
 const expressLayouts = require("express-ejs-layouts");
 const userRouter = require("./routes/user-router");
@@ -19,6 +20,10 @@ const logStream = fs.createWriteStream(path.join(__dirname, "logs.log"), {
 // var usersRouter = require('./routes/users');
 
 var app = express();
+
+let secret = "secret key";
+
+app.use(cookieParser(secret));
 
 app.use(expressLayouts);
 app.set("layout", "./layouts/main-layout");

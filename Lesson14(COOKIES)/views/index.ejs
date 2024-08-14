@@ -6,13 +6,18 @@
     <title>Document</title>
   </head>
   <body>
-    <script src="app1.js"></script>
-    <h1>Введите данные</h1>
-    <form method="post">
-      <label>Имя</label><br />
-      <input type="text" name="userName" /><br /><br />
-      <label>Email</label><br />
-      <input type="text" name="userEmail" /><br /><br />
+    <% if (name) { %>
+
+    <div>Добрый день, <%= name %></div>
+
+    <% if (email) { %>
+
+    <div>(<%= email %>)</div>
+
+    <% } %> <% } %>
+    <form action="/" method="post">
+      <input type="text" name="name" />
+      <input type="email" name="email" />
       <input type="submit" value="Отправить" />
     </form>
   </body>

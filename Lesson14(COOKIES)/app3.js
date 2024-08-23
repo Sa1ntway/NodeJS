@@ -2,26 +2,40 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const urlencodedParser = express.urlencoded({ extended: false });
-const enterDate = new Date();
+let date = "";
+let dif;
+const seconds = (date / 1000).toFixed(3);
+
+let secret = "secret key";
+
+app.use(cookieParser(secret));
 
 let counter = 0;
 
-window.addEventListener("load", function () {
-  setInterval(count, 1000);
-  console.log(123);
-});
-
-function count() {
-  counter++;
+function finalDate() {
+  if (date != "") {
+    let date = new Date().getMilliseconds();
+  } else {
+    let date = new Date().getMilliseconds();
+  }
+  return dif;
 }
 
-app.get("/", function (_, response) {
-  count();
-});
-app.post("/", urlencodedParser, function (request, response) {
-  if (!request.body) return response.sendStatus(400);
-  console.log(counter);
-  response.send(console.log("You've been here for " + counter + "seconds"));
+app.get("/", function (request, response) {
+  if (!request.cookies.date && !request.cookies.counter) {
+    response.cookie("date", new Date().getMilliseconds());
+    response.cookie("counter", counter++);
+  } else {
+    console.log(request.cookies.date);
+    dif = Math.abs(
+      (new Date().getMilliseconds() - request.cookies.date) / 1000
+    ).toFixed(3);
+    response.cookie("date", new Date().getMilliseconds());
+    console.log(request.cookies.counter);
+    response.cookie("counter", counter++);
+  }
+
+  response.send(`<h1>Hello world</h1> ${counter} ${dif} `);
 });
 
 app.listen(3000, () => console.log("Сервер запущен..."));

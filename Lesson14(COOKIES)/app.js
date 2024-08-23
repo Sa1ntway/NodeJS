@@ -3,7 +3,6 @@ const app = express();
 const Parser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
-
 let secret = "secret key";
 
 app.set("view engine", "ejs");

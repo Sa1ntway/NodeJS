@@ -2,8 +2,17 @@ const User = require("../models/user");
 
 exports.registerPage = function (req, res) {
   res.render("register", {
-    title: "Регистрация",
-    layout: "./layouts/main-layout",
+    title: "Web-chat",
+
+    user: req.session.user || null,
+  });
+};
+
+exports.authorizationPage = function (req, res) {
+  res.render("authorization", {
+    title: "Web-chat",
+
+    user: req.session.user || null,
   });
 };
 
@@ -17,7 +26,11 @@ exports.addUser = async function (req, res) {
     if (!userDocument) {
       await user.save();
       user.done();
-      res.send(`Пользователь ${user.login} успешно зарегестрирован`);
+      res.render("toAuthorizationFromReg", {
+        title: "Successfull registration",
+        login: req.body.login,
+        user: null,
+      });
     } else {
       console.log("this login is already taken");
       res.render("register", {
@@ -27,6 +40,7 @@ exports.addUser = async function (req, res) {
         password: req.body.password,
         login: req.body.login,
         layout: "./layouts/main-layout",
+        user: req.session.user || null,
       });
     }
   } catch (err) {
@@ -47,7 +61,29 @@ exports.addUser = async function (req, res) {
         password: req.body.password,
         login: req.body.login,
         layout: "./layouts/main-layout",
+        user: req.session.user || null,
       });
     }
   }
+};
+
+exports.login = async function (req, res) {
+  const user = await User.findOne({
+    login: req.body.userName,
+    password: req.body.password,
+  });
+  if (!user) {
+    res.render("authorization", {
+      errMessage: "Incorrect password or username",
+      title: "Web-chat",
+      user: req.session.user || null,
+    });
+  } else {
+    req.session.user = { id: user.id, name: user.login };
+    res.redirect("/");
+  }
+};
+exports.logout = function (req, res) {
+  delete req.session.user;
+  res.redirect("/");
 };

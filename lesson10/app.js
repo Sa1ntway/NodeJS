@@ -1,7 +1,9 @@
 var createError = require("http-errors");
+const MongoStore = require("connect-mongo");
 var express = require("express");
 var path = require("path");
 const fs = require("fs");
+const session = require("express-session");
 // var cookieParser = require('cookie-parser');
 var logger = require("morgan");
 const favicon = require("serve-favicon");
@@ -22,6 +24,15 @@ const logStream = fs.createWriteStream(path.join(__dirname, "logs.log"), {
 var app = express();
 
 let secret = "secret key";
+
+app.use(
+  session({
+    secret: "ABC098",
+    store: MongoStore.create({
+      mongoUrl: config.get("dbUrl"),
+    }),
+  })
+);
 
 app.use(cookieParser(secret));
 

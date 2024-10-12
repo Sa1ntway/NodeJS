@@ -3,4 +3,13 @@
   <a href="/">Главная</a>
   <a href="/about">О проекте</a>
   <a href="/users/reg">Регистрация</a>
+  <a href="/users/authorization">Авторизация</a>
+  <% if (!user) { %>
+  <li><a href="/users/reg">Register</a></li>
+  <li><a href="/users/authorization">Log in</a></li>
+  <% } else { %>
+  <a href="#">Chat</a>
+  <li><a href="/users/logout">Log out</a></li>
+  <li>You are <%= user.name %></li>
+  <% } %>
 </header>

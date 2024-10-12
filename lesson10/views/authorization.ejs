@@ -1,0 +1,21 @@
+<style>
+  <% if (typeof errSelector !=='undefined') {%>
+      input[name=<%= errSelector %>] {
+          border: 3px red solid
+      }
+  <% } %>
+</style>
+<form action="/users/login" method="post">
+  <h1>Authorization</h1>
+  <label for="login">Логин</label><br />
+  <% if (typeof errMessage !=='undefined') {%>
+  <span><%= errMessage %></span><br />
+  <% } %> <input type="text" name="userName" <%= (typeof login !== 'undefined')
+  ? `value=${userNamme}` : '' %>>
+  <br /><br />
+  <label for="password">Пароль</label><br />
+  <input type="password" name="password" <%= (typeof login !== "undefined") ?
+  `value=${login}`: '' %> >
+  <br /><br />
+  <input type="submit" value="Authorize" />
+</form>

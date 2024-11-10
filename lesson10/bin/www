@@ -4,7 +4,9 @@
  * Module dependencies.
  */
 
-const app = require("../app");
+// import session from "express-session";
+
+const { app, sessionMiddleware } = require("../app");
 var debug = require("debug")("lesson10:server");
 var http = require("http");
 const config = require("../config");
@@ -21,6 +23,21 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
+
+const io = require("socket.io")(server);
+
+io.use(function (socket, next) {
+  sessionMiddleware(socket.request, socket.request.res, next);
+});
+
+io.on("connection", function (socket) {
+  const user = socket.request.session.user;
+  console.log(`A user ${user.name} connected`);
+  socket.on("message", function (data) {
+    console.log(`A user ${user.name} send message: ${data}`);
+    io.sockets.send({ userName: user.name, text: data });
+  });
+});
 
 /**
  * Listen on provided port, on all network interfaces.

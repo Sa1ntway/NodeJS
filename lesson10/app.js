@@ -14,6 +14,7 @@ const cookieParser = require("cookie-parser");
 
 const expressLayouts = require("express-ejs-layouts");
 const userRouter = require("./routes/user-router");
+const chatRouter = require("./routes/chat-router");
 
 const logStream = fs.createWriteStream(path.join(__dirname, "logs.log"), {
   flags: "a",
@@ -23,18 +24,18 @@ const logStream = fs.createWriteStream(path.join(__dirname, "logs.log"), {
 
 var app = express();
 
-let secret = "secret key";
+// let secret = "secret key";
 
-app.use(
-  session({
-    secret: "ABC098",
-    store: MongoStore.create({
-      mongoUrl: config.get("dbUrl"),
-    }),
-  })
-);
+const sessionMiddleware = session({
+  secret: "ABC098",
+  store: MongoStore.create({
+    mongoUrl: config.get("dbUrl"),
+  }),
+});
 
-app.use(cookieParser(secret));
+app.use(sessionMiddleware);
+
+// app.use(cookieParser(secret));
 
 app.use(expressLayouts);
 app.set("layout", "./layouts/main-layout");
@@ -67,6 +68,8 @@ app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 app.use("/users", userRouter);
 
+app.use("/chat", chatRouter);
+
 // // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404, "Страница не найдена. Извините"));
@@ -92,4 +95,4 @@ app.use(function (req, res) {
   res.send("Страница не найдена. Извините");
 });
 
-module.exports = app;
+module.exports = { app, sessionMiddleware };
